@@ -90,7 +90,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         {
             return;
         }*/
-        //#if UNITY_EDITOR
+#if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -98,7 +98,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
                 return;
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            /*#elif UNITY_ANDROID
+#elif UNITY_ANDROID
                     if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
@@ -106,7 +106,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
                             return;
                         }
                         Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            #endif     */
+#endif
             if (Physics.Raycast(ray, out RaycastHit hitunit, float.PositiveInfinity, _unitMask))
             {
                 clickEvent?.Invoke(hitunit.transform.GetComponentInParent<ICreateZone>().ZoneIndex);
@@ -128,7 +128,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
                         CreateUnit(index);
                     }
                 }
-            }           
+            }
         }
     }
 

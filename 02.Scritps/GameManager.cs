@@ -8,6 +8,9 @@ public class GameManager : SingletonMonoBase<GameManager>
 {
     public const int TURNTIMER = 20;
     public const int MAXROUND = 50;
+    public const int STARTGOLD = 400;
+    public const int STARTLIFE = 50;
+
     public int gold
     {
         get => _gold;
@@ -134,10 +137,10 @@ public class GameManager : SingletonMonoBase<GameManager>
     {
         gem = 0;
         monsterCount = 0;
-        gold = 400;
-        life = 50;
-        timeScale = 1;
-        Time.timeScale = timeScale;
+        gold = STARTGOLD;
+        life = STARTLIFE;
+        _timeScale = 1;
+        Time.timeScale = _timeScale;
         round = 0;
         kill = 0;
         _mobZeroWait = new WaitUntil(() => _monsterCount == 0);
@@ -487,7 +490,7 @@ public class GameManager : SingletonMonoBase<GameManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        /*if (Input.GetKeyDown(KeyCode.O))
         {
             gold += 1000;
         }
@@ -514,6 +517,6 @@ public class GameManager : SingletonMonoBase<GameManager>
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             UnitManager.instance.GradeSeletCount(UnitGrade.Eqic, 1);
-        }
+        }*/
     }
 }
