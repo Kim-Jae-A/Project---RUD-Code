@@ -14,6 +14,7 @@ public class UIUnitInfo : UIPopupBase
     Button _evolutionButton;
     Button _sellButton;
     Button _closeButton;
+    Button _infoButton;
 
     ICreateZone _createZone;
 
@@ -29,6 +30,7 @@ public class UIUnitInfo : UIPopupBase
         _sellButton = transform.Find("Panel/Button - Sell").GetComponent<Button>();
         _closeButton = transform.Find("Panel/Button - Close").GetComponent<Button>();
         _unitImage = transform.Find("Panel/Image - Unit/Unit").GetComponent<Image>();
+        _infoButton = transform.Find("Panel/Button - Info").GetComponent<Button>();
 
         UnitManager.instance.clickEvent += value =>
         {
@@ -53,6 +55,11 @@ public class UIUnitInfo : UIPopupBase
             UnitManager.instance.SellUnit(_createZone);
             _createZone = null;
             Hide();
+        });
+
+        _infoButton.onClick.AddListener(() =>
+        {
+            UIManager.instance.Get<UIUnitDictionary>().Refresh(_createZone).Show();
         });
 
         _closeButton.onClick.AddListener(() =>

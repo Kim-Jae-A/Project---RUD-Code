@@ -77,9 +77,9 @@ public class UnitManager : SingletonMonoBase<UnitManager>
     {
         for (int i = 0; i < _dataContainer.CommonData.Length; i++)
         {
-            ObjectPoolingManager.instance.AddObjPool($"Unit/{_dataContainer.CommonData[i].modle.name}", 20);
-            ObjectPoolingManager.instance.AddObjPool($"Bullet/{_dataContainer.CommonData[i].bullet.name}", 30);
-            ObjectPoolingManager.instance.AddObjPool($"Bullet/Eff/{_dataContainer.CommonData[i].bulletEff.name}", 30);
+            ObjectPoolingManager.instance.AddObjPool(_dataContainer.CommonData[i].modle, 20);
+            ObjectPoolingManager.instance.AddObjPool(_dataContainer.CommonData[i].bullet, 50);
+            ObjectPoolingManager.instance.AddObjPool(_dataContainer.CommonData[i].bulletEff, 50);
         }
         //UIManager.instance.Get<UISetting>().settingChanged += value => panelCheck = value;
     }
@@ -159,7 +159,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         UnitChanges(createZone[index].unitData.unitCode, createZone[index].unitData.unitGrade, 1);
         _unitType[(createZone[index].unitData.unitCode, createZone[index].unitData.unitGrade)].Add(createZone[index]);
 
-        GameObject a = ObjectPoolingManager.instance.GetGo($"Unit/{createZone[index].unitData.modle.name}");
+        GameObject a = ObjectPoolingManager.instance.GetGo(createZone[index].unitData.modle.name);
         a.GetComponent<Unit>().unitData = createZone[index].unitData;
         createZone[index].unit = a;
         a.transform.SetParent(createZone[index].mytransform, false);
@@ -190,7 +190,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         UnitChanges(data.unitCode, grade, 1);
         _unitType[(data.unitCode, grade)].Add(createZone[index]);
         GradeSeletCount(grade, -1);
-        GameObject a = ObjectPoolingManager.instance.GetGo($"Unit/{createZone[index].unitData.modle.name}");
+        GameObject a = ObjectPoolingManager.instance.GetGo(createZone[index].unitData.modle.name);
         a.GetComponent<Unit>().unitData = createZone[index].unitData;
         createZone[index].unit = a;
         a.transform.SetParent(createZone[index].mytransform, false);

@@ -18,4 +18,5 @@ public class UnitData : ScriptableObject
     public float bulletSpeed;
     public GameObject bulletEff;
     public Sprite sprite;
+    public string description;
 }

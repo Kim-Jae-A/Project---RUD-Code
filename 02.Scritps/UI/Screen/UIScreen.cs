@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -113,8 +114,15 @@ public class UIScreen : UIScreenBase
 
         GameManager.instance.roundChange += value =>
         {
+            if(value == 50)
+            {
+                _round.text = $"클리어";
+                GameManager.instance.gameClear = true;
+                return;
+            }
             _round.text = $"{value + 1}라운드";
         };
+
         GameManager.instance.killChange += value =>
         {
             _kill.text = $"{value}";

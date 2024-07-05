@@ -43,7 +43,6 @@ public class EnemyManager : SingletonMonoBase<EnemyManager>
             GameManager.instance.roundStart = true;
             yield return StartCoroutine(MobCreate());
         }
-
     }
 
     IEnumerator MobCreate()

@@ -122,7 +122,7 @@ public class Unit : MonoBehaviour
             _animator.SetBool("Attack", false);
             return;
         }
-        GameObject a = ObjectPoolingManager.instance.GetGo($"Bullet/{_unitData.bullet.name}");
+        GameObject a = ObjectPoolingManager.instance.GetGo(_unitData.bullet.name);
         a.transform.position = bulletZone.transform.position;
         a.GetComponent<Bullet>().data = _unitData;
         a.GetComponent<Bullet>().tagetTransform = _targetEnemy;

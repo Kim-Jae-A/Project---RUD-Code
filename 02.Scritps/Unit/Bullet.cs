@@ -60,7 +60,7 @@ public class Bullet : PoolAble
         {
             _tagetTransform.GetComponent<Enemy>().hp -= SetDamage();
         }
-        GameObject a = ObjectPoolingManager.instance.GetGo($"Bullet/Eff/{_data.bulletEff.name}");
+        GameObject a = ObjectPoolingManager.instance.GetGo(_data.bulletEff.name);
         a.transform.position = transform.position;
         if(_data.attackType == AttackType.Splash)
         {

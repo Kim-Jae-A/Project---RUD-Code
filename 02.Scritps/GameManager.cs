@@ -106,6 +106,16 @@ public class GameManager : SingletonMonoBase<GameManager>
         }
     }
 
+    public bool gameClear
+    {
+        get => _gameClear;
+        set
+        {
+            _gameClear = value;
+            gameClearEvent?.Invoke(value);
+        }
+    }
+
     bool _istimerOn;
     bool _isgenFinsh;
     bool _roundStart;
@@ -116,6 +126,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     int _round;
     int _kill;
     float _timeScale;
+    bool _gameClear;
 
     WaitForSeconds _delay = new WaitForSeconds(TURNTIMER);
     WaitUntil _mobZeroWait;
@@ -127,6 +138,7 @@ public class GameManager : SingletonMonoBase<GameManager>
     public event Action<int> lifeChange;
     public event Action<int> killChange;
     public event Action<bool> isgenFinshEvent;
+    public event Action<bool> gameClearEvent;
 
     protected override void Awake()
     {
@@ -143,12 +155,21 @@ public class GameManager : SingletonMonoBase<GameManager>
         Time.timeScale = _timeScale;
         round = 0;
         kill = 0;
+        gameClear = false;
         _mobZeroWait = new WaitUntil(() => _monsterCount == 0);
 
         isgenFinshEvent += value =>
         {
             if (value)
                 StartCoroutine(MobCheck());
+        };
+
+        gameClearEvent += value =>
+        {
+            if (value)
+            {
+                // todo -> gameClear Event
+            }
         };
 
         #region 미션

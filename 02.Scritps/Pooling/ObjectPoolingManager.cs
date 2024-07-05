@@ -46,7 +46,7 @@ public class ObjectPoolingManager : SingletonMonoBase<ObjectPoolingManager>
         _ojbectPoolDic.Add(_name, pool);
         for (int i = 0; i < count; i++)
         {
-            PoolAble a = CreatePooledItem().GetComponent<PoolAble>();
+            PoolAble a = CreatePooledItem(name).GetComponent<PoolAble>();
             a.Pool.Release(a.gameObject);
         }
     }
@@ -54,6 +54,13 @@ public class ObjectPoolingManager : SingletonMonoBase<ObjectPoolingManager>
     private GameObject CreatePooledItem()
     {
         GameObject poolGo = Instantiate(Resources.Load<GameObject>($"{_name}"));
+        poolGo.GetComponent<PoolAble>().Pool = _ojbectPoolDic[_name];
+        return poolGo;
+    }
+
+    private GameObject CreatePooledItem(GameObject name)
+    {
+        GameObject poolGo = Instantiate(name);
         poolGo.GetComponent<PoolAble>().Pool = _ojbectPoolDic[_name];
         return poolGo;
     }
@@ -75,6 +82,7 @@ public class ObjectPoolingManager : SingletonMonoBase<ObjectPoolingManager>
     {
         Destroy(poolGo);
     }
+
     public GameObject GetGo(string goName)
     {
         _name = goName;
