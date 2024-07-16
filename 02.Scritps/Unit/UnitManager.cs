@@ -33,10 +33,9 @@ public class UnitManager : SingletonMonoBase<UnitManager>
 
     UnitData _unitdata;
     int _unitGrade;
-
     bool _seletUnitOn;
-    bool panelCheck;
     bool _createButtonOn;
+    GameObject _seletOra;
 
     public Dictionary<(UnitCode, UnitGrade), int> _unitCount = new Dictionary<(UnitCode, UnitGrade), int>();
     Dictionary<(UnitCode, UnitGrade), List<ICreateZone>> _unitType = new Dictionary<(UnitCode, UnitGrade), List<ICreateZone>>();
@@ -56,6 +55,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         _unitMask = 1 << LayerMask.NameToLayer("Unit");
         _dataContainer = Resources.Load<DataContainer>("DataContainer");
         ObjectPoolingManager.instance.AddObjPool("Ora", 44);
+        ObjectPoolingManager.instance.AddObjPool("SelectZone", 1);
 
         for (int i = 0; i < Enum.GetNames(typeof(UnitCode)).Length - 1; i++)
         {
@@ -81,6 +81,8 @@ public class UnitManager : SingletonMonoBase<UnitManager>
             ObjectPoolingManager.instance.AddObjPool(_dataContainer.CommonData[i].bullet, 50);
             ObjectPoolingManager.instance.AddObjPool(_dataContainer.CommonData[i].bulletEff, 50);
         }
+        _seletOra = ObjectPoolingManager.instance.GetGo("SelectZone");
+        _seletOra.SetActive(false);
         //UIManager.instance.Get<UISetting>().settingChanged += value => panelCheck = value;
     }
 
@@ -90,7 +92,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         {
             return;
         }*/
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -98,7 +100,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
                 return;
             }
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-#elif UNITY_ANDROID
+/*#elif UNITY_ANDROID
                     if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         if (EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
@@ -106,10 +108,12 @@ public class UnitManager : SingletonMonoBase<UnitManager>
                             return;
                         }
                         Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-#endif
+#endif*/
             if (Physics.Raycast(ray, out RaycastHit hitunit, float.PositiveInfinity, _unitMask))
             {
                 clickEvent?.Invoke(hitunit.transform.GetComponentInParent<ICreateZone>().ZoneIndex);
+                _seletOra.transform.position = hitunit.transform.position;
+                _seletOra.SetActive(true);
             }
             if (_createButtonOn)
             {
@@ -132,7 +136,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         }
     }
 
-    void CreateUnit(int index, UnitGrade grade = UnitGrade.None)
+    private void CreateUnit(int index, UnitGrade grade = UnitGrade.None)
     {
         int random = Random.Range(0, _dataContainer.CommonData.Length);
 
@@ -167,7 +171,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         a.transform.localScale = new Vector3(8, 8, 8);
     }
 
-    void CreateUnit(int index, UnitGrade grade, UnitData data)
+    private void CreateUnit(int index, UnitGrade grade, UnitData data)
     {
         switch (grade)
         {
@@ -233,6 +237,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
                 break;
             }
         }
+        _seletOra.SetActive(false);
         CreateUnit(zone.ZoneIndex, zone.unitData.unitGrade);
     }
 
@@ -259,6 +264,7 @@ public class UnitManager : SingletonMonoBase<UnitManager>
             }
         }
         UnitChanges(unitData.unitCode, unitData.unitGrade, -1);
+        _seletOra.SetActive(false);
         zone.unitData = null;
     }
 
@@ -284,6 +290,11 @@ public class UnitManager : SingletonMonoBase<UnitManager>
         gradeCountChange?.Invoke((int)grade, _gradeSelet[grade]);
 
         return _gradeSelet[grade];
+    }
+
+    public void SeletOraOFF()
+    {
+        _seletOra.SetActive(false);
     }
 }
 

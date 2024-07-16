@@ -95,4 +95,5 @@ public class ObjectPoolingManager : SingletonMonoBase<ObjectPoolingManager>
 
         return _ojbectPoolDic[goName].Get();
     }
+
 }

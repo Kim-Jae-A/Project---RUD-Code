@@ -65,6 +65,12 @@ public class UIUnitInfo : UIPopupBase
         _closeButton.onClick.AddListener(() =>
         {
             Hide();
-        });
+        });       
+    }
+
+    public override void Hide()
+    {
+        base.Hide();
+        UnitManager.instance.SeletOraOFF();
     }
 }
